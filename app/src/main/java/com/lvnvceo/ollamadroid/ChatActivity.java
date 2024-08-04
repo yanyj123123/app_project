@@ -1,5 +1,6 @@
 package com.lvnvceo.ollamadroid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class ChatActivity extends AppCompatActivity {
     private final Messages llamaMessages = new Messages();
     private final Gson gson = new Gson();
 
+
     // Constants
     private static final String SETTINGS_KEY = "settings";
     private static final String MODEL_KEY = "model";
@@ -83,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
         //modelTextView = findViewById(R.id.modelName);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SETTINGS_KEY, MODE_PRIVATE);
-        adapter = new ChatAdapter(messages);
+        adapter = new ChatAdapter(this,messages);
         recyclerView.setAdapter(adapter); //将adapter与试图绑定
         Button sendButton = findViewById(R.id.button_send);
         Button stopButton = findViewById(R.id.button_stop);
@@ -116,10 +118,11 @@ public class ChatActivity extends AppCompatActivity {
             //获取用户输入
             EditText editTextMessage = findViewById(R.id.edit_text_message);
             Editable newTextMessage = editTextMessage.getText();
-
+            ChatHistoryUtils chatHistoryUtils=new ChatHistoryUtils(this);
+            String nowDate = chatHistoryUtils.getChatHistoryKey();
             //添加消息到adapter
-            adapter.addMessage(new ChatMessage(R.drawable.baseline_account_circle_24, sharedPreferences.getString("username", "小艺"), newTextMessage.toString()));
-            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground,"AI", ""));
+            adapter.addMessage(new ChatMessage(R.drawable.baseline_account_circle_24, sharedPreferences.getString("username", "小艺"), newTextMessage.toString(),true,false,nowDate));
+            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground,"AI", "",false,false,nowDate));
             adapter.notifyItemInserted(messages.size() - 1);
             recyclerView.smoothScrollToPosition(messages.size() - 1);
             String input = editTextMessage.getText().toString();
@@ -224,7 +227,9 @@ public class ChatActivity extends AppCompatActivity {
     private void addMessage(ChatResponse finalChatResponse, String fullResponse,Button stopButton, Button sendButton) {
         runOnUiThread(() -> {
             adapter.removeMessage(adapter.getItemCount() - 1);
-            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground, "AI", fullResponse));
+            ChatHistoryUtils chatHistoryUtils=new ChatHistoryUtils(this);
+            String nowDate = chatHistoryUtils.getChatHistoryKey();
+            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground, "AI", fullResponse,false,false,nowDate));
             llamaMessages.messages.add(new Messages.Message(finalChatResponse.message.role, fullResponse));
             stopButton.setVisibility(View.INVISIBLE);
             sendButton.setVisibility(View.VISIBLE);
