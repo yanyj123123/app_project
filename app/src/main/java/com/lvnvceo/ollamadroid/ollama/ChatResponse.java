@@ -13,4 +13,5 @@ public class ChatResponse {
     public int prompt_eval_duration;
     public int eval_count;
     public long eval_duration;
+
 }

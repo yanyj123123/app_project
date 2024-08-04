@@ -56,6 +56,8 @@ public class ChatActivity extends AppCompatActivity {
     private List<ChatMessage> messages =new ArrayList<>();
     private TextView modelTextView;
 
+    private long currentTimeMillis;
+
     @Override
     protected void onResume() {
         // 在 Activity 从暂停状态恢复到活动状态时调用。
@@ -121,8 +123,12 @@ public class ChatActivity extends AppCompatActivity {
             ChatHistoryUtils chatHistoryUtils=new ChatHistoryUtils(this);
             String nowDate = chatHistoryUtils.getChatHistoryKey();
             //添加消息到adapter
-            adapter.addMessage(new ChatMessage(R.drawable.baseline_account_circle_24, sharedPreferences.getString("username", "小艺"), newTextMessage.toString(),true,false,nowDate));
-            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground,"AI", "",false,false,nowDate));
+
+            currentTimeMillis=System.currentTimeMillis();
+            adapter.addMessage(new ChatMessage(R.drawable.baseline_account_circle_24, sharedPreferences.getString("username", "小艺"), newTextMessage.toString(),true,false,nowDate,currentTimeMillis));
+
+            currentTimeMillis=System.currentTimeMillis();
+            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground,"AI", "",false,false,nowDate,currentTimeMillis));
             adapter.notifyItemInserted(messages.size() - 1);
             recyclerView.smoothScrollToPosition(messages.size() - 1);
             String input = editTextMessage.getText().toString();
@@ -229,7 +235,9 @@ public class ChatActivity extends AppCompatActivity {
             adapter.removeMessage(adapter.getItemCount() - 1);
             ChatHistoryUtils chatHistoryUtils=new ChatHistoryUtils(this);
             String nowDate = chatHistoryUtils.getChatHistoryKey();
-            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground, "AI", fullResponse,false,false,nowDate));
+
+            currentTimeMillis=System.currentTimeMillis();
+            adapter.addMessage(new ChatMessage(R.drawable.ic_launcher_foreground, "AI", fullResponse,false,false,nowDate,currentTimeMillis));
             llamaMessages.messages.add(new Messages.Message(finalChatResponse.message.role, fullResponse));
             stopButton.setVisibility(View.INVISIBLE);
             sendButton.setVisibility(View.VISIBLE);

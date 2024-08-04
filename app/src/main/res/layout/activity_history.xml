@@ -31,7 +31,7 @@
             android:layout_gravity="center_horizontal"
             android:textSize="20dp"
             android:text="@string/history"/>
-        <!-- 添加设置按钮 -->
+        <!-- 添加删除按钮 -->
         <ImageButton
             android:id="@+id/buttonDelete"
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_gravity="right"
             android:src="@drawable/delete"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Settings" />
+            android:contentDescription="Delete" />
 
     </androidx.appcompat.widget.Toolbar>
     <!-- 添加RecyclerView用于显示聊天记录 -->

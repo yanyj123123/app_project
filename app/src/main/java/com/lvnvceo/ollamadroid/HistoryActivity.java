@@ -71,6 +71,7 @@ public class HistoryActivity extends AppCompatActivity {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         chatHistoryUtils.clearChatHistoryAll();
+                        recreate();
                     }
                 })
                 .setNegativeButton("取消", null)

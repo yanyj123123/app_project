@@ -1,5 +1,6 @@
 package com.lvnvceo.ollamadroid;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,7 @@ public class DateAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return items.size();
     }
     // 更新数据集并通知适配器
+    @SuppressLint("NotifyDataSetChanged")
     public void updateItems(List<Object> newItems) {
         items.clear();
         items.addAll(newItems);

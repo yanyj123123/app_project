@@ -1,12 +1,14 @@
 package com.lvnvceo.ollamadroid;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lvnvceo.ollamadroid.utils.ChatHistoryUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -37,12 +40,11 @@ public class CollectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
-        ImageButton settingsButton=findViewById(R.id.buttonSettings);
+        ImageButton settingsButton=findViewById(R.id.buttonDelete);
         // todo:待显示
         // 跳转到设置界面
         settingsButton.setOnClickListener(v -> {
-            Intent settingsIntent = new Intent(CollectActivity.this, SettingsActivity.class); //当前活动对象，目标活动对象
-            startActivity(settingsIntent);
+            showDeleteConfirmationDialog();
         });
         // 返回上一级
         Button backButton=findViewById(R.id.back);
@@ -59,16 +61,35 @@ public class CollectActivity extends AppCompatActivity {
 
         adapter = new ChatAdapter(this, favoriteMessages);
         recyclerView.setAdapter(adapter);
+
     }
     private List<ChatMessage> loadFavorites() {
         SharedPreferences sharedPreferences = getSharedPreferences(FAVORITES_PREFS, Context.MODE_PRIVATE);
-        System.out.println(sharedPreferences.getAll());
+        //System.out.println(sharedPreferences.getAll());
         Set<String> favorites = sharedPreferences.getStringSet(FAVORITES_KEY, new HashSet<>());
         List<ChatMessage> messages = new ArrayList<>();
         for (String json : favorites) {
             messages.add(ChatMessage.fromJson(json));
         }
-        Collections.sort(messages, (m1, m2) -> m1.getDate().compareTo(m2.getDate()));
+
+        Collections.sort(messages, (m1, m2) -> {
+            return Long.compare(m1.getCurrentTimeMillis(), m2.getCurrentTimeMillis());
+        });
         return messages;
+    }
+
+    private void showDeleteConfirmationDialog() {
+        ChatHistoryUtils chatHistoryUtils=new ChatHistoryUtils(this);
+        new AlertDialog.Builder(this)
+                .setTitle("确认删除")
+                .setMessage("您确定要删除全部收藏记录吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        chatHistoryUtils.clearCollectAll();
+                        recreate();
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
     }
 }

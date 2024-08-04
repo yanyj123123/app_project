@@ -98,12 +98,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     // 更新图标
                     if (newFavoriteStatus) {
                         sentViewHolder.favoriteButton.setImageResource(R.drawable.collect_succ);
+
                         saveToFavorites(message);
                         saveToFavorites(receive_message);
+
 
                     } else {
                         sentViewHolder.favoriteButton.setImageResource(R.drawable.collect);
                         removeFromFavorites(message);
+                        notifyDataSetChanged();
                     }
 
                     // 显示收藏状态的 Toast
@@ -120,7 +123,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
     private void saveToFavorites(ChatMessage message) {
+        // 获取文件名为 FAVORITES_PREFS 的实例
         SharedPreferences sharedPreferences = context.getSharedPreferences(FAVORITES_PREFS, Context.MODE_PRIVATE);
+        // 获取编辑器
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Set<String> favorites = sharedPreferences.getStringSet(FAVORITES_KEY, new HashSet<>());
         favorites.add(message.toJson()); // Assuming ChatMessage has a toJson() method
@@ -128,6 +133,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         editor.apply();
     }
 
+    @SuppressLint({"NotifyDataSetChanged", "MutatingSharedPrefs"})
     private void removeFromFavorites(ChatMessage message) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(FAVORITES_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -135,6 +141,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         favorites.remove(message.toJson()); // Assuming ChatMessage has a toJson() method
         editor.putStringSet(FAVORITES_KEY, favorites);
         editor.apply();
+        notifyDataSetChanged();
     }
 
     private List<ChatMessage> getFavorites() {

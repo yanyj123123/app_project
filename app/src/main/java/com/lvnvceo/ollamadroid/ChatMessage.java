@@ -15,14 +15,17 @@ public class ChatMessage {
 
     private final String date;
 
+    private final long currentTimeMillis;
 
-    public ChatMessage(int profileImage, String profileName, String messageContent , boolean isSent, boolean isFavorite, String date) {
+
+    public ChatMessage(int profileImage, String profileName, String messageContent , boolean isSent, boolean isFavorite, String date,long currentTimeMillis) {
         this.profileImage = profileImage;
         this.profileName = profileName;
         this.messageContent = messageContent;
         this.isSent = isSent;
         this.isFavorite=isFavorite;
         this.date = date;
+        this.currentTimeMillis=currentTimeMillis;
     }
 
     public int getProfileImage() {
@@ -49,6 +52,10 @@ public class ChatMessage {
 
     public String getDate(){
         return date;
+    }
+
+    public long getCurrentTimeMillis() {
+        return currentTimeMillis;
     }
 
     public String toJson() {

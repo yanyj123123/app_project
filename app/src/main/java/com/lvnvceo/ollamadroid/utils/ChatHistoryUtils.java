@@ -18,21 +18,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class ChatHistoryUtils {
     private SharedPreferences sharedPreferences;
     private Gson gson;
+
+    private final Context context;
     private static final String PREFERENCES_KEY = "ChatApp";
     private static final String TAG = "HistoryActivity";
+
+    private static final String FAVORITES_PREFS = "favorites_prefs";
+    private static final String FAVORITES_KEY = "favorites_key";
 
     private DateAdapter2 adapter;
     public ChatHistoryUtils(Context context){
         this.sharedPreferences = context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
         this.gson = new Gson();
+        this.context=context;
     }
     // 保存历史聊天
     public void saveChatHistory(List<String[]> chatHistory,String keyName,String question,String message) {
@@ -129,14 +137,34 @@ public class ChatHistoryUtils {
         editor.remove(date);
         // 提交更改
         editor.apply();
+
+
+
     }
     public void clearChatHistoryAll() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
         editor.clear();
+        if (adapter != null) {
+            adapter.updateItems(new ArrayList<>());
+            Log.d(TAG, "All chat history deleted.");
+        } else {
+            Log.e(TAG, "Adapter is null when trying to clear chat history.");
+        }
+
         editor.apply();
 
         // 更新适配器的数据集并通知数据已更改
-        adapter.updateItems(new ArrayList<>());
+
+    }
+
+
+    public void clearCollectAll() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FAVORITES_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+
+        editor.apply();
     }
 
 }
