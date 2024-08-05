@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(collectIntent);
                 } else if (itemId == R.id.nav_model_choose) {
                     //todo 处理 model_choose 按钮点击事件
-                    Intent collectIntent = new Intent(MainActivity.this, ModelActivity.class);
+                    Intent collectIntent = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivity(collectIntent);
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);

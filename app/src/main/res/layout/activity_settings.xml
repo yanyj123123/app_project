@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ollama_api_url"
+            android:text="本机地址"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:paddingBottom="8dp" />
@@ -33,7 +33,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/select_model"
+            android:text="模型选择"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:paddingTop="16dp"
@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/system_prompt"
+            android:text="AI名称"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:paddingTop="16dp"
@@ -92,7 +92,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_picture"
+            android:text="我的头像"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:paddingTop="16dp"
@@ -123,19 +123,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/select_picture"
+                android:text="选择头像"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonSave"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:text="@string/save"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/design_default_color_primary"
-            android:textColor="@android:color/white" />
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="保存"
+                android:backgroundTint="@color/design_default_color_primary"
+                android:textColor="@android:color/white"
+                android:minWidth="120dp"
+                android:minHeight="48dp" />
+
+            <Button
+                android:id="@+id/buttonReturn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="返回"
+                android:backgroundTint="@color/design_default_color_primary"
+                android:textColor="@android:color/white"
+                android:minWidth="120dp"
+                android:minHeight="48dp" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

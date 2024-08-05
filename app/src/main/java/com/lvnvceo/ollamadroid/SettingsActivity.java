@@ -56,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
         ollamaAPIURL = findViewById(R.id.editOllamaAPIURL);
         username = findViewById(R.id.editUsername);
         modelSpinner = findViewById(R.id.spinnerModels);
-
+        Button buttonReturn = findViewById(R.id.buttonReturn);
         sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.settings_key), Context.MODE_PRIVATE);
         systemPrompt.setText(sharedPreferences.getString(getString(R.string.system_prompt_key), null));
         ollamaAPIURL.setText(sharedPreferences.getString(getString(R.string.ollama_url_key),null));
@@ -73,6 +73,12 @@ public class SettingsActivity extends AppCompatActivity {
             editor.apply();
             finish();
         });
+
+        buttonReturn.setOnClickListener(v -> {
+            finish();
+        });
+
+
         ollamaAPIURL.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
